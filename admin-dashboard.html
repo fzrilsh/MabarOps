@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Admin - MabarOps</title>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="index.html" style="display:flex;align-items:center;gap:8px;text-decoration:none;">
+      <img src="images/logo.png" alt="MabarOps" style="height:30px;width:auto;" />
+      <span style="font-weight:700;color:#fff;">MabarOps</span>
+    </a>
+    <div style="display:flex;gap:6px;align-items:center;">
+      <a href="customer-portal.html" class="btn btn-cyan btn-sm"><i class="fa-solid fa-user"></i> Pelanggan</a>
+      <a href="streamer-dashboard.html" class="btn btn-outline btn-sm"><i class="fa-solid fa-crown"></i> Streamer</a>
+    </div>
+  </div>
+</nav>
+
+<div class="page">
+  <div class="container">
+
+    <div style="margin-bottom:16px;">
+      <h1 style="font-size:20px;font-weight:700;"><i class="fa-solid fa-user-shield" style="color:var(--cyan);"></i> Dashboard Admin</h1>
+      <p style="font-size:13px;color:var(--text2);">Atur antrean, buat room, publish room code. </p>
+    </div>
+
+    <div class="stat-row stat-row-4" style="margin-bottom:16px;">
+      <div class="stat-box">
+        <div class="stat-val" style="color:var(--cyan);">8</div>
+        <div class="stat-lbl">Antrean</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-val" style="color:var(--gold);">3</div>
+        <div class="stat-lbl">Fast-track</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-val" style="color:var(--purple);">5</div>
+        <div class="stat-lbl">Regular</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-val" style="color:var(--green);">12</div>
+        <div class="stat-lbl"><i class="fa-solid fa-check-circle"></i> Selesai</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section-title"><i class="fa-solid fa-list" style="color:var(--cyan);"></i> Antrean Pemain</div>
+      <p class="section-sub">Gunakan tombol naik/turun untuk urutkan. 4 pemain teratas untuk room selanjutnya. Data sudah tervalidasi.</p>
+
+      <div id="queueContainer" data-queue></div>
+
+      <div id="queuePagination" style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:14px;"></div>
+    </div>
+
+    <div class="card">
+      <div class="section-title"><i class="fa-solid fa-door-open" style="color:var(--green);"></i> Publikasi Room Code</div>
+      <div style="margin-bottom:12px;">
+        <p style="font-size:13px;color:var(--text2);">Langkah:</p>
+        <ol style="font-size:12px;color:var(--text2);padding-left:18px;line-height:1.8;">
+          <li>Buat <strong style="color:#fff;">Custom Room</strong> di MLBB</li>
+          <li>Invite akun <strong style="color:#fff;">Rizky Gaming</strong> ke dalam room</li>
+          <li>Copy <strong style="color:#fff;">Room Code</strong> dari dalam game</li>
+          <li>Masukkan di bawah lalu klik <strong style="color:var(--gold);">Publish</strong></li>
+        </ol>
+      </div>
+
+      <div style="display:flex;gap:8px;margin-bottom:12px;">
+        <input type="text" id="roomCodeInput" placeholder="6 digit room code" maxlength="6"
+               class="input" style="text-align:center;font-size:20px;font-weight:800;letter-spacing:0.3em;text-transform:uppercase;flex:1;"/>
+        <button class="btn btn-gold" onclick="publishRoomCode('roomCodeInput')"><i class="fa-solid fa-paper-plane"></i> Publish</button>
+      </div>
+
+      <div style="text-align:center;">
+        <p style="font-size:12px;color:var(--text2);margin-bottom:4px;">Room code akan muncul di portal pelanggan:</p>
+        <div class="room-code-big room-code-display">*** ***</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section-title"><i class="fa-regular fa-clock" style="color:var(--text3);"></i> Riwayat Room Code</div>
+      <div class="grid-3" style="gap:8px;">
+        <div style="padding:10px;border-radius:8px;background:rgb(34 197 94 / 0.06);border:1px solid rgb(34 197 94 / 0.12);text-align:center;">
+          <div style="font-size:18px;font-weight:800;letter-spacing:0.15em;color:var(--green);">789012</div>
+          <div style="font-size:10px;color:var(--text3);">5 menit lalu <i class="fa-solid fa-check" style="color:var(--green);"></i></div>
+        </div>
+        <div style="padding:10px;border-radius:8px;background:rgb(34 197 94 / 0.06);border:1px solid rgb(34 197 94 / 0.12);text-align:center;">
+          <div style="font-size:18px;font-weight:800;letter-spacing:0.15em;color:var(--green);">456789</div>
+          <div style="font-size:10px;color:var(--text3);">22 menit lalu <i class="fa-solid fa-check" style="color:var(--green);"></i></div>
+        </div>
+        <div style="padding:10px;border-radius:8px;background:rgb(239 68 68 / 0.06);border:1px solid rgb(239 68 68 / 0.12);text-align:center;">
+          <div style="font-size:18px;font-weight:800;letter-spacing:0.15em;color:var(--red);">345678</div>
+          <div style="font-size:10px;color:var(--text3);">35 menit lalu <i class="fa-solid fa-xmark" style="color:var(--red);"></i></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="footer">Admin Dashboard — MabarOps</div>
+
+<script src="js/app.js"></script>
+<script>
+
+var allPlayers = [
+  {nick:'Rafi_MLBB', id:'12345678', type:'ft', status:'playing', donatur:'RafiGaming', doneBtn:'Selesai', doneColor:'green', doneToast:'RafiGaming selesai'},
+  {nick:'Andi_ML', id:'23456789', type:'ft', status:'waiting', donatur:'AndiPro', doneBtn:'Proses', doneColor:'cyan', doneToast:'AndiPro diproses'},
+  {nick:'Siska_Girl', id:'34567890', type:'rg', status:'waiting', donatur:'SiskaML', doneBtn:'Proses', doneColor:'cyan', doneToast:'SiskaML diproses'},
+  {nick:'Budi_GT', id:'45678901', type:'rg', status:'waiting', donatur:'Budi99', doneBtn:'Proses', doneColor:'cyan', doneToast:'Budi99 diproses'},
+  {nick:'Dewi_MLBB', id:'78901234', type:'ft', status:'waiting', donatur:'Dewi_Squad', doneBtn:'Proses', doneColor:'cyan', doneToast:'Dewi_Squad diproses'},
+  {nick:'Fajar_ML', id:'56789012', type:'rg', status:'waiting', donatur:'FajarID', doneBtn:'Proses', doneColor:'cyan', doneToast:'FajarID diproses'},
+  {nick:'Rina_MLBB', id:'67890123', type:'rg', status:'waiting', donatur:'RinaGZ', doneBtn:'Proses', doneColor:'cyan', doneToast:'RinaGZ diproses'},
+  {nick:'HendraGG', id:'89012345', type:'rg', status:'waiting', donatur:'HendraGG', doneBtn:'Proses', doneColor:'cyan', doneToast:'HendraGG diproses'},
+  {nick:'TikaML', id:'90123456', type:'rg', status:'waiting', donatur:'TikaMLBB', doneBtn:'Proses', doneColor:'cyan', doneToast:'TikaMLBB diproses'},
+  {nick:'Doni_Kus', id:'01234567', type:'rg', status:'waiting', donatur:'DoniKus', doneBtn:'Proses', doneColor:'cyan', doneToast:'DoniKus diproses'},
+  {nick:'Putri_ML', id:'11111111', type:'ft', status:'waiting', donatur:'PutriML', doneBtn:'Proses', doneColor:'cyan', doneToast:'PutriML diproses'},
+  {nick:'Adit_Pro', id:'22222222', type:'rg', status:'waiting', donatur:'AditPro', doneBtn:'Proses', doneColor:'cyan', doneToast:'AditPro diproses'},
+  {nick:'Nina_Girl', id:'33333333', type:'rg', status:'waiting', donatur:'NinaGZ', doneBtn:'Proses', doneColor:'cyan', doneToast:'NinaGZ diproses'},
+  {nick:'Bima_ID', id:'44444444', type:'rg', status:'waiting', donatur:'BimaID', doneBtn:'Proses', doneColor:'cyan', doneToast:'BimaID diproses'},
+  {nick:'Citra_ML', id:'55555555', type:'ft', status:'waiting', donatur:'CitraML', doneBtn:'Proses', doneColor:'cyan', doneToast:'CitraML diproses'},
+  {nick:'Edo_Squad', id:'66666666', type:'rg', status:'waiting', donatur:'EdoSquad', doneBtn:'Proses', doneColor:'cyan', doneToast:'EdoSquad diproses'}
+];
+
+var perPage = 8;
+var currentPage = 1;
+var totalPages = Math.ceil(allPlayers.length / perPage);
+
+
+function syncQueueArray() {
+  var rows = document.querySelectorAll('#queueContainer .queue-row');
+  if (rows.length === 0) return;
+  var reordered = [];
+  for (var i = 0; i < rows.length; i++) {
+    var name = rows[i].querySelector('.queue-name');
+    var meta = rows[i].querySelector('.queue-meta span');
+    if (name && meta) {
+      var found = false;
+      for (var j = 0; j < allPlayers.length; j++) {
+        if (allPlayers[j].id === meta.textContent.replace('Game ID: ', '').split(' ')[0]) {
+          reordered.push(allPlayers[j]);
+          found = true;
+          break;
+        }
+      }
+      if (!found) {
+        
+        reordered.push(allPlayers[i]);
+      }
+    }
+  }
+  
+  for (var i = 0; i < allPlayers.length; i++) {
+    var exists = false;
+    for (var j = 0; j < reordered.length; j++) {
+      if (reordered[j].id === allPlayers[i].id) { exists = true; break; }
+    }
+    if (!exists) reordered.push(allPlayers[i]);
+  }
+  allPlayers = reordered;
+}
+
+function renderQueue() {
+  
+  syncQueueArray();
+  
+  var container = document.getElementById('queueContainer');
+  var pagination = document.getElementById('queuePagination');
+  if (!container) return;
+
+  var startIdx = (currentPage - 1) * perPage;
+  var pagePlayers = allPlayers.slice(startIdx, startIdx + perPage);
+
+  var html = '';
+
+  
+  if (currentPage === 1) {
+    html += '<div class="label label-playing" style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--cyan);margin-bottom:6px;display:flex;align-items:center;gap:6px;"><i class="fa-solid fa-play" style="font-size:0.75em;"></i> Sedang Bermain</div>';
+    for (var i = 0; i < Math.min(4, pagePlayers.length); i++) {
+      html += buildRow(pagePlayers[i], startIdx + i + 1);
+    }
+    if (pagePlayers.length > 4) {
+      html += '<div style="height:8px;"></div>';
+      html += '<div class="label label-next" style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--gold);margin-bottom:6px;display:flex;align-items:center;gap:6px;"><i class="fa-regular fa-clock" style="font-size:0.75em;"></i> Selanjutnya</div>';
+      for (var i = 4; i < pagePlayers.length; i++) {
+        html += buildRow(pagePlayers[i], startIdx + i + 1);
+      }
+    }
+  } else {
+    html += '<div class="label label-next" style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--gold);margin-bottom:6px;display:flex;align-items:center;gap:6px;"><i class="fa-regular fa-clock"></i> Antrean (Halaman ' + currentPage + ')</div>';
+    for (var i = 0; i < pagePlayers.length; i++) {
+      html += buildRow(pagePlayers[i], startIdx + i + 1);
+    }
+  }
+
+  container.innerHTML = html;
+
+  
+  var rows = container.querySelectorAll('.queue-row');
+  for (var i = 0; i < rows.length; i++) {
+    rows[i].setAttribute('data-pos', startIdx + i + 1);
+  }
+
+  
+  renderPagination();
+}
+
+function buildRow(player, pos) {
+  var borderColor = player.type === 'ft' ? 'var(--gold)' : 'var(--purple)';
+  var statusBadge = player.status === 'playing'
+    ? '<span class="badge badge-playing"><i class="fa-solid fa-play"></i> Sedang Main</span>'
+    : '<span class="badge badge-waiting"><i class="fa-regular fa-clock"></i> Menunggu</span>';
+
+  var actionBtns = '';
+  if (player.doneBtn === 'Selesai') {
+    actionBtns = '<button class="btn btn-sm btn-outline" style="border-color:var(--' + player.doneColor + ');color:var(--' + player.doneColor + ');" onclick="toast(\'' + player.doneToast + '\',\'success\')"><i class="fa-solid fa-check"></i> ' + player.doneBtn + '</button>';
+  } else {
+    actionBtns = '<button class="btn btn-sm btn-outline" style="border-color:var(--' + player.doneColor + ');color:var(--' + player.doneColor + ');" onclick="toast(\'' + player.doneToast + '\',\'success\')"><i class="fa-solid fa-play"></i> ' + player.doneBtn + '</button>'
+      + '<button class="btn btn-sm btn-outline" style="border-color:var(--red);color:var(--red);" onclick="toast(\'' + player.donatur + ' dilewati\',\'warning\')"><i class="fa-solid fa-forward-step"></i> Skip</button>';
+  }
+
+  return '<div class="queue-row" data-pos="' + pos + '" style="border-left:3px solid ' + borderColor + ';">'
+    + (player.status !== 'playing' ? '<div class="move-buttons">'
+    +   '<button class="btn btn-sm btn-outline" onclick="moveQueueItem(this,\'up\')" title="Naikkan"><i class="fa-solid fa-chevron-up"></i></button>'
+    +   '<button class="btn btn-sm btn-outline" onclick="moveQueueItem(this,\'down\')" title="Turunkan"><i class="fa-solid fa-chevron-down"></i></button>'
+    + '</div>' : '')
+    + '<div class="queue-info">'
+    +   '<div class="queue-name">' + player.nick + '</div>'
+    +   '<div class="queue-meta"><span>Game ID: ' + player.id + ' (8080)</span> <button class="btn btn-sm btn-outline" onclick="copyText(\'' + player.id + '\');event.stopPropagation();" title="Salin Game ID" style="padding:1px 5px;font-size:9px;"><i class="fa-regular fa-copy"></i></button></div>'
+    + '</div>'
+    + statusBadge
+    + '<div class="queue-actions">' + actionBtns + '</div>'
+    + '</div>';
+}
+
+function renderPagination() {
+  var p = document.getElementById('queuePagination');
+  if (!p) return;
+
+  var html = '';
+  html += '<button class="btn btn-sm btn-outline" onclick="goPage(' + (currentPage - 1) + ')" ' + (currentPage <= 1 ? 'disabled style=\"opacity:0.4;cursor:default;\"' : '') + '><i class="fa-solid fa-chevron-left"></i></button>';
+
+  for (var i = 1; i <= totalPages; i++) {
+    var active = i === currentPage;
+    html += '<button class="btn btn-sm ' + (active ? 'btn-cyan' : 'btn-outline') + '" onclick="goPage(' + i + ')">' + i + '</button>';
+  }
+
+  html += '<button class="btn btn-sm btn-outline" onclick="goPage(' + (currentPage + 1) + ')" ' + (currentPage >= totalPages ? 'disabled style=\"opacity:0.4;cursor:default;\"' : '') + '><i class="fa-solid fa-chevron-right"></i></button>';
+
+  p.innerHTML = html;
+}
+
+function goPage(page) {
+  if (page < 1 || page > totalPages) return;
+  currentPage = page;
+  renderQueue();
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  renderQueue();
+});
+</script>
+</body>
+</html>

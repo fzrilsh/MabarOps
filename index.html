@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>MabarOps - Manajemen Open Mabar MLBB</title>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="#" style="display:flex;align-items:center;gap:8px;text-decoration:none;">
+      <img src="images/logo.png" alt="MabarOps" style="height:30px;width:auto;" />
+      <span style="font-weight:700;color:#fff;">MabarOps</span>
+    </a>
+    <div style="display:flex;gap:6px;">
+      <a href="streamer-dashboard.html" class="btn btn-outline btn-sm"><i class="fa-solid fa-right-to-bracket"></i> Masuk</a>
+      <a href="streamer-dashboard.html" class="btn btn-gold btn-sm"><i class="fa-solid fa-rocket"></i> Mulai</a>
+    </div>
+  </div>
+</nav>
+
+<div class="page">
+  <div class="container">
+
+    <div style="text-align:center;padding:32px 0 24px;">
+      <h1 style="font-size:30px;font-weight:800;line-height:1.2;margin-bottom:10px;">
+        Kelola <span style="color:var(--gold);">Open Mabar</span> MLBB<br/>Jadi Otomatis &amp; Simple
+      </h1>
+      <p style="color:var(--text2);font-size:14px;max-width:460px;margin:0 auto 20px;">
+        Platform manajemen bisnis mabar untuk streamer. Donasi Sawiera terdeteksi otomatis,
+        antrean rapi, admin &amp; pelanggan punya portal masing-masing.
+      </p>
+      <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
+        <a href="streamer-dashboard.html" class="btn btn-gold"><i class="fa-solid fa-play"></i> Coba Sekarang</a>
+        <a href="#fitur" class="btn btn-outline"><i class="fa-solid fa-circle-info"></i> Lihat Fitur</a>
+      </div>
+    </div>
+
+    <div class="section-title" style="justify-content:center;"><i class="fa-solid fa-users"></i> Pilih Peran Kamu</div>
+    <div class="grid-3" style="margin-bottom:20px;">
+      <div class="card" style="text-align:center;">
+        <div style="font-size:28px;margin-bottom:6px;color:var(--gold);"><i class="fa-solid fa-crown"></i></div>
+        <h3 style="font-size:14px;font-weight:700;">Streamer</h3>
+        <p style="font-size:12px;color:var(--text2);margin:4px 0 10px;">Aktifkan sesi, atur harga, lihat analitik AI.</p>
+        <a href="streamer-dashboard.html" class="btn btn-gold btn-sm"><i class="fa-solid fa-arrow-right"></i> Dashboard</a>
+      </div>
+      <div class="card" style="text-align:center;">
+        <div style="font-size:28px;margin-bottom:6px;color:var(--purple);"><i class="fa-solid fa-user-shield"></i></div>
+        <h3 style="font-size:14px;font-weight:700;">Administrator</h3>
+        <p style="font-size:12px;color:var(--text2);margin:4px 0 10px;">Atur antrean, buat room, publish room code.</p>
+        <a href="admin-dashboard.html" class="btn btn-purple btn-sm"><i class="fa-solid fa-arrow-right"></i> Dashboard</a>
+      </div>
+      <div class="card" style="text-align:center;">
+        <div style="font-size:28px;margin-bottom:6px;color:var(--cyan);"><i class="fa-solid fa-user"></i></div>
+        <h3 style="font-size:14px;font-weight:700;">Pelanggan</h3>
+        <p style="font-size:12px;color:var(--text2);margin:4px 0 10px;">Isi ID Game, dapatkan room code, beri rating.</p>
+        <a href="customer-portal.html" class="btn btn-cyan btn-sm"><i class="fa-solid fa-arrow-right"></i> Portal</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section-title"><i class="fa-solid fa-route"></i> Cara Kerja</div>
+      <div class="grid-4">
+        <div>
+          <div style="font-size:20px;font-weight:800;color:var(--text);">1.</div>
+          <div style="font-size:13px;font-weight:600;margin:2px 0;">Aktifkan Sesi</div>
+          <p style="font-size:11px;color:var(--text2);">Streamer toggle ON. Sistem listen donasi Sawiera.</p>
+        </div>
+        <div>
+          <div style="font-size:20px;font-weight:800;color:var(--text);">2.</div>
+          <div style="font-size:13px;font-weight:600;margin:2px 0;">Donasi Masuk</div>
+          <p style="font-size:11px;color:var(--text2);">Penonton donasi + keyword "mabar". Auto-masuk antrean.</p>
+        </div>
+        <div>
+          <div style="font-size:20px;font-weight:800;color:var(--text);">3.</div>
+          <div style="font-size:13px;font-weight:600;margin:2px 0;">Admin Buat Room</div>
+          <p style="font-size:11px;color:var(--text2);">Admin buat room, invite streamer, publish code.</p>
+        </div>
+        <div>
+          <div style="font-size:20px;font-weight:800;color:var(--text);">4.</div>
+          <div style="font-size:13px;font-weight:600;margin:2px 0;">Mabar Dimulai</div>
+          <p style="font-size:11px;color:var(--text2);">Pelanggan join pakai code, main bareng, lalu rating.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-title" id="fitur"><i class="fa-solid fa-star"></i> Fitur Utama</div>
+    <div class="grid-2" style="margin-bottom:20px;">
+      <div class="card">
+        <div style="font-size:13px;font-weight:700;color:var(--text);">Parser Donasi Otomatis</div>
+        <p style="font-size:12px;color:var(--text2);margin-top:4px;">Integrasi WebSocket Sawiera. Deteksi nominal &amp; keyword mabar. Fast-track vs Regular otomatis terbedakan.</p>
+      </div>
+      <div class="card">
+        <div style="font-size:13px;font-weight:700;color:var(--text);">Smart Queue 2 Jalur</div>
+        <p style="font-size:12px;color:var(--text2);margin-top:4px;">Antrean Regular &amp; Fast-track terpisah. Prioritas berdasarkan level prioritas yang ditentukan streamer.</p>
+      </div>
+      <div class="card">
+        <div style="font-size:13px;font-weight:700;color:var(--text);">OBS Overlay</div>
+        <p style="font-size:12px;color:var(--text2);margin-top:4px;">Tampilkan antrean di siaran via Browser Source. Real-time, full-screen, readable di background apapun.</p>
+      </div>
+      <div class="card">
+        <div style="font-size:13px;font-weight:700;color:var(--text);">Portal Pelanggan Permanen</div>
+        <p style="font-size:12px;color:var(--text2);margin-top:4px;">Unique link permanen via email. Atur Game ID, lihat room code real-time, beri feedback selesai main.</p>
+      </div>
+
+  </div>
+</div>
+
+<div class="footer">MabarOps — Project Hackathon</div>
+
+<script src="js/app.js"></script>
+</body>
+</html>
