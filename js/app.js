@@ -90,7 +90,7 @@ function calcRoyalty() {
   }
   
   var estRevenue = total * 12; 
-  var fee = Math.round(estRevenue * 0.1);
+  var fee = Math.round(estRevenue * 0.05);
   var el = document.getElementById('royaltyDisplay');
   if (el) el.textContent = 'Rp ' + fee.toLocaleString();
 }
