@@ -17,9 +17,7 @@
       <span style="font-weight:700;color:#fff;">MabarOps</span>
     </a>
     <div style="display:flex;gap:6px;align-items:center;">
-      <a href="overlay.html" class="btn btn-outline btn-sm"><i class="fa-solid fa-display"></i> Overlay</a>
-      <a href="moderator-dashboard.html" class="btn btn-cyan btn-sm"><i class="fa-solid fa-user-shield"></i> Moderator</a>
-      <a href="index.html" class="btn btn-outline btn-sm"><i class="fa-solid fa-arrow-left"></i></a>
+      <button class="btn btn-outline btn-sm" onclick="handleLogout()" style="border-color:var(--red);color:var(--red);cursor:pointer;"><i class="fa-solid fa-right-from-bracket"></i> Keluar</button>
     </div>
   </div>
 </nav>
@@ -135,6 +133,43 @@
     </div>
 
     <div class="card">
+      <div class="section-title"><i class="fa-solid fa-user-shield" style="color:var(--cyan);"></i> Kelola Moderator</div>
+      <p class="section-sub">Daftarkan moderator via email mereka. Moderator akan mendapat akses ke dashboard khusus untuk kanal kamu.</p>
+
+      <div id="moderatorList">
+        <div class="queue-row moderator-row" data-email="budi@gmail.com" style="cursor:default;">
+          <div style="width:32px;height:32px;border-radius:50%;background:rgb(0 212 255 / 0.15);color:var(--cyan);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0;">B</div>
+          <div class="queue-info">
+            <div class="queue-name">budi@gmail.com</div>
+            <div class="queue-meta"><span>Bergabung 2 hari lalu</span></div>
+          </div>
+          <span class="badge badge-playing" style="flex-shrink:0;"><i class="fa-solid fa-check"></i> Aktif</span>
+          <button class="btn btn-sm btn-outline" style="border-color:var(--red);color:var(--red);flex-shrink:0;" onclick="removeModerator('budi@gmail.com')"><i class="fa-solid fa-user-minus"></i> Hapus</button>
+        </div>
+        <div class="queue-row moderator-row" data-email="siti@yahoo.com" style="cursor:default;">
+          <div style="width:32px;height:32px;border-radius:50%;background:rgb(245 197 24 / 0.15);color:var(--gold);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0;">S</div>
+          <div class="queue-info">
+            <div class="queue-name">siti@yahoo.com</div>
+            <div class="queue-meta"><span>Baru saja bergabung</span></div>
+          </div>
+          <span class="badge badge-waiting" style="flex-shrink:0;"><i class="fa-regular fa-clock"></i> Menunggu Aktivasi</span>
+          <button class="btn btn-sm btn-outline" style="border-color:var(--red);color:var(--red);flex-shrink:0;" onclick="removeModerator('siti@yahoo.com')"><i class="fa-solid fa-user-minus"></i> Hapus</button>
+        </div>
+      </div>
+
+      <div id="moderatorEmpty" style="display:none;text-align:center;padding:16px 0;color:var(--text3);">
+        <p style="font-size:13px;">Belum ada moderator. Tambahkan email moderator di bawah.</p>
+      </div>
+
+      <div class="hr"></div>
+      <div class="section-title" style="font-size:14px;"><i class="fa-solid fa-user-plus" style="color:var(--cyan);"></i> Tambah Moderator Baru</div>
+      <div style="display:flex;gap:8px;">
+        <input type="email" id="newModeratorEmail" placeholder="moderator@email.com" class="input" style="padding:7px 10px;font-size:13px;flex:1;" />
+        <button class="btn btn-cyan btn-sm" onclick="addModerator()" style="white-space:nowrap;"><i class="fa-solid fa-plus"></i> Tambah</button>
+      </div>
+    </div>
+
+    <div class="card">
       <div class="section-title"><i class="fa-solid fa-brain" style="color:var(--purple);"></i> Analitik AI</div>
 
       <div style="margin-bottom:16px;">
@@ -206,6 +241,81 @@
     toast(this.checked ? 'Sesi Mabar Aktif!' : 'Sesi Mabar Nonaktif', this.checked ? 'success' : 'warning');
   });
   calcRoyalty();
+
+  function addModerator() {
+    var email = document.getElementById('newModeratorEmail').value.trim();
+    if (!email) {
+      toast('Masukkan email moderator!', 'warning');
+      return;
+    }
+    if (email.indexOf('@') === -1) {
+      toast('Email tidak valid!', 'warning');
+      return;
+    }
+
+    var existing = document.querySelectorAll('.moderator-row');
+    for (var i = 0; i < existing.length; i++) {
+      if (existing[i].getAttribute('data-email') === email) {
+        toast('Email sudah terdaftar sebagai moderator!', 'warning');
+        return;
+      }
+    }
+
+    var initial = email.charAt(0).toUpperCase();
+    var colors = ['rgb(0 212 255 / 0.15)', 'rgb(245 197 24 / 0.15)', 'rgb(139 92 246 / 0.15)'];
+    var textColors = ['var(--cyan)', 'var(--gold)', 'var(--purple)'];
+    var ci = existing.length % colors.length;
+
+    var now = new Date();
+    var timeLabel = now.getHours() < 12 ? 'Baru saja — pagi ini' : now.getHours() < 18 ? 'Baru saja — siang ini' : 'Baru saja — malam ini';
+
+    var row = document.createElement('div');
+    row.className = 'queue-row moderator-row';
+    row.setAttribute('data-email', email);
+    row.style.cursor = 'default';
+    row.innerHTML =
+      '<div style="width:32px;height:32px;border-radius:50%;background:' + colors[ci] + ';color:' + textColors[ci] + ';display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0;">' + initial + '</div>'
+      + '<div class="queue-info">'
+      +   '<div class="queue-name">' + email + '</div>'
+      +   '<div class="queue-meta"><span>' + timeLabel + '</span></div>'
+      + '</div>'
+      + '<span class="badge badge-waiting" style="flex-shrink:0;"><i class="fa-regular fa-clock"></i> Menunggu Aktivasi</span>'
+      + '<button class="btn btn-sm btn-outline" style="border-color:var(--red);color:var(--red);flex-shrink:0;" onclick="removeModerator(\'' + email + '\')"><i class="fa-solid fa-user-minus"></i> Hapus</button>';
+
+    document.getElementById('moderatorList').appendChild(row);
+    document.getElementById('moderatorEmpty').style.display = 'none';
+    document.getElementById('newModeratorEmail').value = '';
+
+    toast('Moderator ' + email + ' ditambahkan!', 'success');
+  }
+
+  function removeModerator(email) {
+    var rows = document.querySelectorAll('.moderator-row');
+    for (var i = 0; i < rows.length; i++) {
+      if (rows[i].getAttribute('data-email') === email) {
+        rows[i].remove();
+        break;
+      }
+    }
+
+    var remaining = document.querySelectorAll('.moderator-row');
+    if (remaining.length === 0) {
+      document.getElementById('moderatorEmpty').style.display = 'block';
+    }
+
+    toast('Moderator ' + email + ' telah dihapus!', 'success');
+  }
+
+  /* ── Session Check ── */
+  var session = JSON.parse(localStorage.getItem('mabarops_session') || 'null');
+  if (!session || session.role !== 'streamer') {
+    window.location.href = 'login.html';
+  }
+
+  function handleLogout() {
+    localStorage.removeItem('mabarops_session');
+    window.location.href = 'index.html';
+  }
 </script>
 </body>
 </html>
