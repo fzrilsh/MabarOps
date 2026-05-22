@@ -17,8 +17,7 @@
       <span style="font-weight:700;color:#fff;">MabarOps</span>
     </a>
     <div style="display:flex;gap:6px;align-items:center;">
-      <a href="customer-portal.html" class="btn btn-cyan btn-sm"><i class="fa-solid fa-user"></i> Pelanggan</a>
-      <a href="streamer-dashboard.html" class="btn btn-outline btn-sm"><i class="fa-solid fa-crown"></i> Streamer</a>
+      <button class="btn btn-outline btn-sm" onclick="handleLogout()" style="border-color:var(--red);color:var(--red);cursor:pointer;"><i class="fa-solid fa-right-from-bracket"></i> Keluar</button>
     </div>
   </div>
 </nav>
@@ -28,24 +27,24 @@
 
     <div style="margin-bottom:16px;">
       <h1 style="font-size:20px;font-weight:700;"><i class="fa-solid fa-user-shield" style="color:var(--cyan);"></i> Dashboard Moderator</h1>
-      <p style="font-size:13px;color:var(--text2);">Atur antrean, buat room, publish room code. </p>
+      <p style="font-size:13px;color:var(--text2);">Atur antrean, buat room, publish room code.</p>
     </div>
 
     <div class="stat-row stat-row-4" style="margin-bottom:16px;">
       <div class="stat-box">
-        <div class="stat-val" style="color:var(--cyan);">8</div>
+        <div class="stat-val" id="statAntrean" style="color:var(--cyan);">8</div>
         <div class="stat-lbl">Antrean</div>
       </div>
       <div class="stat-box">
-        <div class="stat-val" style="color:var(--gold);">3</div>
+        <div class="stat-val" id="statFastTrack" style="color:var(--gold);">3</div>
         <div class="stat-lbl">Fast-track</div>
       </div>
       <div class="stat-box">
-        <div class="stat-val" style="color:var(--purple);">5</div>
+        <div class="stat-val" id="statRegular" style="color:var(--purple);">5</div>
         <div class="stat-lbl">Regular</div>
       </div>
       <div class="stat-box">
-        <div class="stat-val" style="color:var(--green);">12</div>
+        <div class="stat-val" id="statSelesai" style="color:var(--green);">12</div>
         <div class="stat-lbl"><i class="fa-solid fa-check-circle"></i> Selesai</div>
       </div>
     </div>
@@ -83,49 +82,75 @@
       </div>
     </div>
 
-    <div class="card">
-      <div class="section-title"><i class="fa-regular fa-clock" style="color:var(--text3);"></i> Riwayat Room Code</div>
-      <div class="grid-3" style="gap:8px;">
-        <div style="padding:10px;border-radius:8px;background:rgb(34 197 94 / 0.06);border:1px solid rgb(34 197 94 / 0.12);text-align:center;">
-          <div style="font-size:18px;font-weight:800;letter-spacing:0.15em;color:var(--green);">789012</div>
-          <div style="font-size:10px;color:var(--text3);">5 menit lalu <i class="fa-solid fa-check" style="color:var(--green);"></i></div>
-        </div>
-        <div style="padding:10px;border-radius:8px;background:rgb(34 197 94 / 0.06);border:1px solid rgb(34 197 94 / 0.12);text-align:center;">
-          <div style="font-size:18px;font-weight:800;letter-spacing:0.15em;color:var(--green);">456789</div>
-          <div style="font-size:10px;color:var(--text3);">22 menit lalu <i class="fa-solid fa-check" style="color:var(--green);"></i></div>
-        </div>
-        <div style="padding:10px;border-radius:8px;background:rgb(239 68 68 / 0.06);border:1px solid rgb(239 68 68 / 0.12);text-align:center;">
-          <div style="font-size:18px;font-weight:800;letter-spacing:0.15em;color:var(--red);">345678</div>
-          <div style="font-size:10px;color:var(--text3);">35 menit lalu <i class="fa-solid fa-xmark" style="color:var(--red);"></i></div>
-        </div>
-      </div>
-    </div>
-
   </div>
 </div>
 
 <div class="footer">© 2026 Team Rp17.845 — All Rights Reserved</div>
 
+<div id="reportModal" class="modal-overlay" style="display:none;">
+  <div class="modal-content">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+      <div class="section-title" style="margin-bottom:0;"><i class="fa-solid fa-trophy" style="color:var(--gold);"></i> Report Hasil Pertandingan</div>
+      <button class="btn btn-sm btn-outline" onclick="closeReportModal()"><i class="fa-solid fa-xmark"></i> Tutup</button>
+    </div>
+
+    <div style="margin-bottom:14px;">
+      <label style="font-size:12px;font-weight:600;display:block;margin-bottom:8px;">Hasil Pertandingan</label>
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn-result" data-result="win" onclick="selectResult('win')"
+          style="flex:1;padding:12px;border:2px solid var(--border);border-radius:9px;background:transparent;color:var(--green);font-weight:700;cursor:pointer;transition:all 0.15s;font-size:14px;">
+          <i class="fa-solid fa-trophy"></i> Menang
+        </button>
+        <button class="btn btn-result" data-result="lose" onclick="selectResult('lose')"
+          style="flex:1;padding:12px;border:2px solid var(--border);border-radius:9px;background:transparent;color:var(--red);font-weight:700;cursor:pointer;transition:all 0.15s;font-size:14px;">
+          <i class="fa-solid fa-xmark"></i> Kalah
+        </button>
+      </div>
+      <p id="selectResultHint" style="font-size:11px;color:var(--text3);margin-top:6px;">Pilih hasil pertandingan</p>
+    </div>
+
+    <div style="display:flex;gap:10px;margin-bottom:16px;">
+      <div style="flex:1;">
+        <label style="font-size:12px;font-weight:600;display:block;margin-bottom:6px;">Durasi</label>
+        <input type="text" id="matchDuration" class="input" placeholder="15:30" maxlength="8"
+               style="text-align:center;font-family:'Courier New',monospace;font-weight:700;font-size:16px;padding:10px;">
+      </div>
+      <div style="flex:1;">
+        <label style="font-size:12px;font-weight:600;display:block;margin-bottom:6px;">Points Streamer</label>
+        <input type="number" id="matchPoints" class="input" placeholder="8.2" min="0" step="0.1" max="15"
+               style="text-align:center;font-weight:700;font-size:16px;padding:10px;">
+      </div>
+    </div>
+
+    <button class="btn btn-gold" onclick="submitMatchReport()" style="width:100%;justify-content:center;padding:14px;font-size:15px;">
+      <i class="fa-solid fa-check"></i> Submit & Selesaikan Pertandingan
+    </button>
+  </div>
+</div>
+
 <script src="js/app.js"></script>
 <script>
 
+var matchHistory = [];
+var completedCount = 12;
+
 var allPlayers = [
-  {nick:'Rafi_MLBB', id:'12345678', type:'ft', status:'playing', donatur:'RafiGaming', doneBtn:'Selesai', doneColor:'green', doneToast:'RafiGaming selesai'},
-  {nick:'Andi_ML', id:'23456789', type:'ft', status:'waiting', donatur:'AndiPro', doneBtn:'Proses', doneColor:'cyan', doneToast:'AndiPro diproses'},
-  {nick:'Siska_Girl', id:'34567890', type:'rg', status:'waiting', donatur:'SiskaML', doneBtn:'Proses', doneColor:'cyan', doneToast:'SiskaML diproses'},
-  {nick:'Budi_GT', id:'45678901', type:'rg', status:'waiting', donatur:'Budi99', doneBtn:'Proses', doneColor:'cyan', doneToast:'Budi99 diproses'},
-  {nick:'Dewi_MLBB', id:'78901234', type:'ft', status:'waiting', donatur:'Dewi_Squad', doneBtn:'Proses', doneColor:'cyan', doneToast:'Dewi_Squad diproses'},
-  {nick:'Fajar_ML', id:'56789012', type:'rg', status:'waiting', donatur:'FajarID', doneBtn:'Proses', doneColor:'cyan', doneToast:'FajarID diproses'},
-  {nick:'Rina_MLBB', id:'67890123', type:'rg', status:'waiting', donatur:'RinaGZ', doneBtn:'Proses', doneColor:'cyan', doneToast:'RinaGZ diproses'},
-  {nick:'HendraGG', id:'89012345', type:'rg', status:'waiting', donatur:'HendraGG', doneBtn:'Proses', doneColor:'cyan', doneToast:'HendraGG diproses'},
-  {nick:'TikaML', id:'90123456', type:'rg', status:'waiting', donatur:'TikaMLBB', doneBtn:'Proses', doneColor:'cyan', doneToast:'TikaMLBB diproses'},
-  {nick:'Doni_Kus', id:'01234567', type:'rg', status:'waiting', donatur:'DoniKus', doneBtn:'Proses', doneColor:'cyan', doneToast:'DoniKus diproses'},
-  {nick:'Putri_ML', id:'11111111', type:'ft', status:'waiting', donatur:'PutriML', doneBtn:'Proses', doneColor:'cyan', doneToast:'PutriML diproses'},
-  {nick:'Adit_Pro', id:'22222222', type:'rg', status:'waiting', donatur:'AditPro', doneBtn:'Proses', doneColor:'cyan', doneToast:'AditPro diproses'},
-  {nick:'Nina_Girl', id:'33333333', type:'rg', status:'waiting', donatur:'NinaGZ', doneBtn:'Proses', doneColor:'cyan', doneToast:'NinaGZ diproses'},
-  {nick:'Bima_ID', id:'44444444', type:'rg', status:'waiting', donatur:'BimaID', doneBtn:'Proses', doneColor:'cyan', doneToast:'BimaID diproses'},
-  {nick:'Citra_ML', id:'55555555', type:'ft', status:'waiting', donatur:'CitraML', doneBtn:'Proses', doneColor:'cyan', doneToast:'CitraML diproses'},
-  {nick:'Edo_Squad', id:'66666666', type:'rg', status:'waiting', donatur:'EdoSquad', doneBtn:'Proses', doneColor:'cyan', doneToast:'EdoSquad diproses'}
+  {nick:'Rafi_MLBB', id:'12345678', type:'ft', status:'belum_masuk', donatur:'RafiGaming'},
+  {nick:'Andi_ML', id:'23456789', type:'ft', status:'belum_masuk', donatur:'AndiPro'},
+  {nick:'Siska_Girl', id:'34567890', type:'rg', status:'belum_masuk', donatur:'SiskaML'},
+  {nick:'Budi_GT', id:'45678901', type:'rg', status:'belum_masuk', donatur:'Budi99'},
+  {nick:'Dewi_MLBB', id:'78901234', type:'ft', status:'waiting', donatur:'Dewi_Squad'},
+  {nick:'Fajar_ML', id:'56789012', type:'rg', status:'waiting', donatur:'FajarID'},
+  {nick:'Rina_MLBB', id:'67890123', type:'rg', status:'waiting', donatur:'RinaGZ'},
+  {nick:'HendraGG', id:'89012345', type:'rg', status:'waiting', donatur:'HendraGG'},
+  {nick:'TikaML', id:'90123456', type:'rg', status:'waiting', donatur:'TikaMLBB'},
+  {nick:'Doni_Kus', id:'01234567', type:'rg', status:'waiting', donatur:'DoniKus'},
+  {nick:'Putri_ML', id:'11111111', type:'ft', status:'waiting', donatur:'PutriML'},
+  {nick:'Adit_Pro', id:'22222222', type:'rg', status:'waiting', donatur:'AditPro'},
+  {nick:'Nina_Girl', id:'33333333', type:'rg', status:'waiting', donatur:'NinaGZ'},
+  {nick:'Bima_ID', id:'44444444', type:'rg', status:'waiting', donatur:'BimaID'},
+  {nick:'Citra_ML', id:'55555555', type:'ft', status:'waiting', donatur:'CitraML'},
+  {nick:'Edo_Squad', id:'66666666', type:'rg', status:'waiting', donatur:'EdoSquad'}
 ];
 
 var perPage = 8;
@@ -150,12 +175,10 @@ function syncQueueArray() {
         }
       }
       if (!found) {
-        
         reordered.push(allPlayers[i]);
       }
     }
   }
-  
   for (var i = 0; i < allPlayers.length; i++) {
     var exists = false;
     for (var j = 0; j < reordered.length; j++) {
@@ -167,9 +190,7 @@ function syncQueueArray() {
 }
 
 function renderQueue() {
-  
   syncQueueArray();
-  
   var container = document.getElementById('queueContainer');
   var pagination = document.getElementById('queuePagination');
   if (!container) return;
@@ -177,10 +198,26 @@ function renderQueue() {
   var startIdx = (currentPage - 1) * perPage;
   var pagePlayers = allPlayers.slice(startIdx, startIdx + perPage);
 
+  var top4AllMasuk = true;
+  var top4HasAnyone = false;
+  for (var i = 0; i < Math.min(4, allPlayers.length); i++) {
+    top4HasAnyone = true;
+    if (allPlayers[i].status !== 'playing') {
+      top4AllMasuk = false;
+    }
+  }
+
   var html = '';
 
-  
-  if (currentPage === 1) {
+  if (currentPage === 1 && top4HasAnyone) {
+    if (top4AllMasuk) {
+      html += '<div style="margin-bottom:10px;">'
+        + '<button class="btn btn-gold" onclick="openReportModal()" style="width:100%;justify-content:center;padding:12px;font-size:14px;">'
+        +   '<i class="fa-solid fa-trophy"></i> Report Hasil Pertandingan'
+        + '</button>'
+        + '</div>';
+    }
+
     html += '<div class="label label-playing" style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--cyan);margin-bottom:6px;display:flex;align-items:center;gap:6px;"><i class="fa-solid fa-play" style="font-size:0.75em;"></i> Sedang Bermain</div>';
     for (var i = 0; i < Math.min(4, pagePlayers.length); i++) {
       html += buildRow(pagePlayers[i], startIdx + i + 1);
@@ -193,40 +230,51 @@ function renderQueue() {
       }
     }
   } else {
-    html += '<div class="label label-next" style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--gold);margin-bottom:6px;display:flex;align-items:center;gap:6px;"><i class="fa-regular fa-clock"></i> Antrean (Halaman ' + currentPage + ')</div>';
-    for (var i = 0; i < pagePlayers.length; i++) {
-      html += buildRow(pagePlayers[i], startIdx + i + 1);
+    if (pagePlayers.length === 0 && currentPage === 1) {
+      html += '<div style="text-align:center;padding:24px 0;color:var(--text3);">'
+        +   '<i class="fa-solid fa-users" style="font-size:32px;display:block;margin-bottom:8px;opacity:0.3;"></i>'
+        +   '<p style="font-size:14px;">Tidak ada pemain dalam antrean</p>'
+        + '</div>';
+    } else {
+      html += '<div class="label label-next" style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--gold);margin-bottom:6px;display:flex;align-items:center;gap:6px;"><i class="fa-regular fa-clock"></i> Antrean (Halaman ' + currentPage + ')</div>';
+      for (var i = 0; i < pagePlayers.length; i++) {
+        html += buildRow(pagePlayers[i], startIdx + i + 1);
+      }
     }
   }
 
   container.innerHTML = html;
 
-  
   var rows = container.querySelectorAll('.queue-row');
   for (var i = 0; i < rows.length; i++) {
     rows[i].setAttribute('data-pos', startIdx + i + 1);
   }
 
-  
   renderPagination();
 }
 
 function buildRow(player, pos) {
   var borderColor = player.type === 'ft' ? 'var(--gold)' : 'var(--purple)';
-  var statusBadge = player.status === 'playing'
-    ? '<span class="badge badge-playing"><i class="fa-solid fa-play"></i> Sedang Main</span>'
-    : '<span class="badge badge-waiting"><i class="fa-regular fa-clock"></i> Menunggu</span>';
-
+  var statusBadge = '';
+  var showMoveBtns = true;
   var actionBtns = '';
-  if (player.doneBtn === 'Selesai') {
-    actionBtns = '<button class="btn btn-sm btn-outline" style="border-color:var(--' + player.doneColor + ');color:var(--' + player.doneColor + ');" onclick="toast(\'' + player.doneToast + '\',\'success\')"><i class="fa-solid fa-check"></i> ' + player.doneBtn + '</button>';
+
+  if (player.status === 'playing') {
+    statusBadge = '<span class="badge badge-playing"><i class="fa-solid fa-play"></i> Sedang Main</span>';
+    showMoveBtns = false;
+    actionBtns = '<button class="btn btn-sm btn-outline" style="border-color:var(--red);color:var(--red);" onclick="skipPlayer(\'' + player.id + '\')"><i class="fa-solid fa-forward-step"></i> Skip</button>';
+  } else if (player.status === 'belum_masuk') {
+    statusBadge = '<span class="badge badge-waiting" style="border-color:var(--orange);background:rgb(249 115 22 / 0.12);color:var(--orange);"><i class="fa-regular fa-door-open"></i> Belum Masuk</span>';
+    showMoveBtns = false;
+    actionBtns = '<button class="btn btn-sm btn-outline" style="border-color:var(--cyan);color:var(--cyan);" onclick="masukRoom(\'' + player.id + '\')"><i class="fa-solid fa-right-to-bracket"></i> Masuk</button>'
+      + '<button class="btn btn-sm btn-outline" style="border-color:var(--red);color:var(--red);" onclick="skipPlayer(\'' + player.id + '\')"><i class="fa-solid fa-forward-step"></i> Skip</button>';
   } else {
-    actionBtns = '<button class="btn btn-sm btn-outline" style="border-color:var(--' + player.doneColor + ');color:var(--' + player.doneColor + ');" onclick="toast(\'' + player.doneToast + '\',\'success\')"><i class="fa-solid fa-play"></i> ' + player.doneBtn + '</button>'
-      + '<button class="btn btn-sm btn-outline" style="border-color:var(--red);color:var(--red);" onclick="toast(\'' + player.donatur + ' dilewati\',\'warning\')"><i class="fa-solid fa-forward-step"></i> Skip</button>';
+    statusBadge = '<span class="badge badge-waiting"><i class="fa-regular fa-clock"></i> Menunggu</span>';
+    actionBtns = '<button class="btn btn-sm btn-outline" style="border-color:var(--red);color:var(--red);" onclick="skipPlayer(\'' + player.id + '\')"><i class="fa-solid fa-forward-step"></i> Skip</button>';
   }
 
-  return '<div class="queue-row" data-pos="' + pos + '" style="border-left:3px solid ' + borderColor + ';">'
-    + (player.status !== 'playing' ? '<div class="move-buttons">'
+  return '<div class="queue-row" style="border-left:3px solid ' + borderColor + ';">'
+    + (showMoveBtns ? '<div class="move-buttons">'
     +   '<button class="btn btn-sm btn-outline" onclick="moveQueueItem(this,\'up\')" title="Naikkan"><i class="fa-solid fa-chevron-up"></i></button>'
     +   '<button class="btn btn-sm btn-outline" onclick="moveQueueItem(this,\'down\')" title="Turunkan"><i class="fa-solid fa-chevron-down"></i></button>'
     + '</div>' : '')
@@ -262,8 +310,181 @@ function goPage(page) {
   renderQueue();
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+function updateStats() {
+  var antrean = 0, ft = 0, rg = 0;
+  for (var i = 0; i < allPlayers.length; i++) {
+    antrean++;
+    if (allPlayers[i].type === 'ft') ft++;
+    else rg++;
+  }
+  document.getElementById('statAntrean').textContent = antrean;
+  document.getElementById('statFastTrack').textContent = ft;
+  document.getElementById('statRegular').textContent = rg;
+  document.getElementById('statSelesai').textContent = completedCount;
+}
+
+/* ── Modal ── */
+
+var selectedResult = null;
+
+function openReportModal() {
+  selectedResult = null;
+  document.getElementById('matchDuration').value = '';
+  document.getElementById('matchPoints').value = '';
+  document.getElementById('selectResultHint').textContent = 'Pilih hasil pertandingan';
+  var btns = document.querySelectorAll('#reportModal .btn-result');
+  for (var i = 0; i < btns.length; i++) {
+    btns[i].style.borderColor = 'var(--border)';
+    btns[i].style.background = 'transparent';
+  }
+  document.getElementById('reportModal').style.display = 'flex';
+}
+
+function closeReportModal() {
+  document.getElementById('reportModal').style.display = 'none';
+}
+
+function selectResult(result) {
+  selectedResult = result;
+  var btns = document.querySelectorAll('#reportModal .btn-result');
+  for (var i = 0; i < btns.length; i++) {
+    var b = btns[i];
+    var r = b.getAttribute('data-result');
+    if (r === result) {
+      b.style.borderColor = result === 'win' ? 'var(--green)' : 'var(--red)';
+      b.style.background = result === 'win' ? 'rgba(34,197,94,0.1)' : 'rgba(239,68,68,0.1)';
+    } else {
+      b.style.borderColor = 'var(--border)';
+      b.style.background = 'transparent';
+    }
+  }
+  document.getElementById('selectResultHint').textContent = result === 'win' ? '✅ Menang' : '❌ Kalah';
+}
+
+function masukRoom(playerId) {
+  for (var i = 0; i < allPlayers.length; i++) {
+    if (allPlayers[i].id === playerId) {
+      allPlayers[i].status = 'playing';
+      toast(allPlayers[i].donatur + ' sudah masuk room!', 'success');
+      break;
+    }
+  }
   renderQueue();
+}
+
+function skipPlayer(playerId) {
+  var idx = -1;
+  for (var i = 0; i < allPlayers.length; i++) {
+    if (allPlayers[i].id === playerId) {
+      idx = i;
+      break;
+    }
+  }
+  if (idx === -1) return;
+
+  var player = allPlayers[idx];
+  var isCurrentMatch = idx < 4;
+
+  // Re-set status to waiting when skipping from current match
+  if (isCurrentMatch) {
+    player.status = 'waiting';
+  }
+
+  allPlayers.splice(idx, 1);
+
+  if (isCurrentMatch) {
+    // Skip dari antrian saat ini → masuk ke antrian selanjutnya (end of queue)
+    allPlayers.push(player);
+    toast(player.donatur + ' dipindah ke antrean selanjutnya', 'warning');
+  } else {
+    // Skip dari antrian selanjutnya → turun 2x antrean (8 posisi ke bawah)
+    var insertPos = Math.min(idx + 8, allPlayers.length);
+    allPlayers.splice(insertPos, 0, player);
+    toast(player.donatur + ' turun 2x antrean', 'warning');
+  }
+
+  totalPages = Math.ceil(allPlayers.length / perPage);
+  if (currentPage > totalPages) currentPage = totalPages;
+  if (currentPage < 1) currentPage = 1;
+  renderQueue();
+  updateStats();
+}
+
+function submitMatchReport() {
+  if (!selectedResult) {
+    toast('Pilih hasil pertandingan dulu!', 'warning');
+    return;
+  }
+
+  var duration = document.getElementById('matchDuration').value.trim();
+  if (!duration) {
+    toast('Isi durasi pertandingan!', 'warning');
+    return;
+  }
+
+  var points = parseFloat(document.getElementById('matchPoints').value);
+  if (isNaN(points) || points < 0) {
+    toast('Isi points streamer dengan benar!', 'warning');
+    return;
+  }
+
+  var now = new Date();
+  var timeStr = now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0');
+
+  var match = {
+    id: matchHistory.length + 1,
+    result: selectedResult,
+    duration: duration,
+    points: points,
+    time: timeStr
+  };
+  matchHistory.push(match);
+
+  // Hapus semua player yang 'playing' (top 4 yang sudah main)
+  var playingIds = [];
+  for (var i = 0; i < allPlayers.length; i++) {
+    if (allPlayers[i].status === 'playing') {
+      playingIds.push(allPlayers[i].id);
+    }
+  }
+
+  allPlayers = allPlayers.filter(function(p) {
+    return playingIds.indexOf(p.id) === -1;
+  });
+
+  completedCount += playingIds.length;
+
+  // Otomatis isi slot kosong dengan 4 pemain waiting berikutnya
+  var nextBatch = Math.min(4, allPlayers.length);
+  for (var i = 0; i < nextBatch; i++) {
+    allPlayers[i].status = 'belum_masuk';
+  }
+
+  totalPages = Math.ceil(allPlayers.length / perPage);
+  if (currentPage > totalPages) currentPage = totalPages;
+  if (currentPage < 1) currentPage = 1;
+
+  closeReportModal();
+  renderQueue();
+  updateStats();
+
+  toast('Match #' + match.id + ' — ' + (match.result === 'win' ? '🏆 Menang' : '❌ Kalah') + ' (' + match.points + ' pts) — ' + playingIds.length + ' pemain selesai!', 'success');
+}
+
+/* ── Session Check ── */
+var session = JSON.parse(localStorage.getItem('mabarops_session') || 'null');
+function handleLogout() {
+  localStorage.removeItem('mabarops_session');
+  window.location.href = 'index.html';
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  if (!session || session.role !== 'moderator') {
+    window.location.href = 'login.html';
+    return;
+  }
+  renderQueue();
+  updateStats();
 });
 </script>
 </body>
