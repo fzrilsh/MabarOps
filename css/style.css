@@ -225,6 +225,32 @@ body {
 .grid-form-3 { display:grid; grid-template-columns: 1fr 1fr 1fr auto; gap:8px; }
 .grid-form-2 { display:grid; grid-template-columns: 2fr 1fr; gap:10px; }
 
+.modal-overlay {
+  display:flex; align-items:center; justify-content:center;
+  position:fixed; inset:0; z-index:100;
+  background:rgba(5,7,20,0.85);
+  backdrop-filter:blur(4px);
+  animation:fadeIn 0.15s ease-out;
+}
+.modal-content {
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:24px;
+  width:90%;
+  max-width:420px;
+  animation:slideUp 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity:0; }
+  to { opacity:1; }
+}
+@keyframes slideUp {
+  from { opacity:0; transform:translateY(16px); }
+  to { opacity:1; transform:translateY(0); }
+}
+
 .footer {
   border-top: 1px solid var(--border);
   padding: 16px 0; text-align:center;
