@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Masuk - MabarOps</title>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="index.html" style="display:flex;align-items:center;gap:8px;text-decoration:none;">
+      <img src="images/logo.png" alt="MabarOps" style="height:30px;width:auto;" />
+      <span style="font-weight:700;color:#fff;">MabarOps</span>
+    </a>
+  </div>
+</nav>
+
+<div class="page">
+  <div class="container" style="max-width:420px;">
+
+    <div style="text-align:center;margin-bottom:24px;padding-top:20px;">
+      <h1 style="font-size:22px;font-weight:800;">Masuk ke MabarOps</h1>
+      <p style="font-size:13px;color:var(--text2);margin-top:4px;">Pilih role kamu untuk masuk ke dashboard</p>
+    </div>
+
+    <div class="card" style="padding:28px;">
+      <div id="loginError" style="display:none;background:rgb(239 68 68 / 0.1);border:1px solid rgb(239 68 68 / 0.2);border-radius:9px;padding:10px 14px;margin-bottom:16px;font-size:13px;color:var(--red);">
+        <i class="fa-solid fa-circle-exclamation"></i> <span id="loginErrorMsg">Email atau password salah!</span>
+      </div>
+
+      <div style="margin-bottom:16px;">
+        <label style="font-size:12px;font-weight:600;display:block;margin-bottom:6px;">Pilih Role</label>
+        <div style="display:flex;gap:8px;">
+          <button class="btn role-btn" data-role="streamer" onclick="selectRole('streamer')"
+            style="flex:1;padding:10px;border:2px solid var(--border);border-radius:9px;background:transparent;color:var(--gold);font-weight:600;cursor:pointer;transition:all 0.15s;">
+            <i class="fa-solid fa-crown"></i> Streamer
+          </button>
+          <button class="btn role-btn" data-role="moderator" onclick="selectRole('moderator')"
+            style="flex:1;padding:10px;border:2px solid var(--border);border-radius:9px;background:transparent;color:var(--cyan);font-weight:600;cursor:pointer;transition:all 0.15s;">
+            <i class="fa-solid fa-user-shield"></i> Moderator
+          </button>
+        </div>
+      </div>
+
+      <div style="margin-bottom:14px;">
+        <label style="font-size:12px;font-weight:600;display:block;margin-bottom:6px;">Email</label>
+        <input type="email" id="loginEmail" class="input" placeholder="email@example.com" style="padding:10px 12px;font-size:14px;"/>
+      </div>
+
+      <div style="margin-bottom:20px;">
+        <label style="font-size:12px;font-weight:600;display:block;margin-bottom:6px;">Password</label>
+        <input type="password" id="loginPassword" class="input" placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;" style="padding:10px 12px;font-size:14px;"/>
+      </div>
+
+      <button class="btn btn-gold" onclick="handleLogin()" style="width:100%;justify-content:center;padding:12px;font-size:15px;">
+        <i class="fa-solid fa-right-to-bracket"></i> Masuk
+      </button>
+    </div>
+
+    <div style="text-align:center;margin-top:16px;">
+      <a href="index.html" style="font-size:12px;color:var(--text3);text-decoration:none;">
+        <i class="fa-solid fa-arrow-left"></i> Kembali ke Beranda
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<div class="footer">© 2026 Team Rp17.845 — All Rights Reserved</div>
+
+<script>
+var selectedRole = null;
+
+function selectRole(role) {
+  selectedRole = role;
+  var btns = document.querySelectorAll('.role-btn');
+  for (var i = 0; i < btns.length; i++) {
+    var b = btns[i];
+    var r = b.getAttribute('data-role');
+    if (r === role) {
+      b.style.borderColor = role === 'streamer' ? 'var(--gold)' : 'var(--cyan)';
+      b.style.background = role === 'streamer' ? 'rgb(245 197 24 / 0.08)' : 'rgb(0 212 255 / 0.08)';
+    } else {
+      b.style.borderColor = 'var(--border)';
+      b.style.background = 'transparent';
+    }
+  }
+}
+
+var users = {
+  streamer: { email: 'rizky@gmail.com', password: 'streamer123', name: 'Rizky Gaming', redirect: 'streamer-dashboard.html' },
+  moderator: { email: 'budi@gmail.com', password: 'mod123', name: 'Budi', redirect: 'moderator-dashboard.html' }
+};
+
+function handleLogin() {
+  var errorEl = document.getElementById('loginError');
+  var errorMsg = document.getElementById('loginErrorMsg');
+  errorEl.style.display = 'none';
+
+  if (!selectedRole) {
+    errorMsg.textContent = 'Pilih role (Streamer atau Moderator) dulu!';
+    errorEl.style.display = 'block';
+    return;
+  }
+
+  var email = document.getElementById('loginEmail').value.trim();
+  var password = document.getElementById('loginPassword').value.trim();
+
+  if (!email || !password) {
+    errorMsg.textContent = 'Isi email dan password!';
+    errorEl.style.display = 'block';
+    return;
+  }
+
+  var user = users[selectedRole];
+
+  if (email !== user.email || password !== user.password) {
+    errorMsg.textContent = selectedRole === 'streamer'
+      ? 'Email atau password salah! Coba: rizky@gmail.com / streamer123'
+      : 'Email atau password salah! Coba: budi@gmail.com / mod123';
+    errorEl.style.display = 'block';
+    return;
+  }
+
+  // Simpan session
+  var session = {
+    role: selectedRole,
+    email: email,
+    name: user.name,
+    loginTime: new Date().toISOString()
+  };
+  localStorage.setItem('mabarops_session', JSON.stringify(session));
+
+  // Redirect ke dashboard sesuai role
+  window.location.href = user.redirect;
+}
+
+// Enter key to login
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') handleLogin();
+});
+</script>
+</body>
+</html>
