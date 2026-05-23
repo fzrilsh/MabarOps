@@ -63,25 +63,25 @@
       <div class="queue-row" style="border-left:3px solid var(--gold);">
         <div class="queue-info">
           <div class="queue-name">RafiGaming</div>
-          <div class="queue-meta">Fast-track — Rp 100.000</div>
+          <div class="queue-meta">Sisa Match: 5 | Game ID: 12345678 (8080)</div>
         </div>
       </div>
       <div class="queue-row" style="border-left:3px solid var(--gold);">
         <div class="queue-info">
           <div class="queue-name">AndiPro</div>
-          <div class="queue-meta">Fast-track — Rp 100.000</div>
+          <div class="queue-meta">Sisa Match: 3 | Game ID: 23456789 (8081)</div>
         </div>
       </div>
       <div class="queue-row" style="border-left:3px solid var(--purple);">
         <div class="queue-info">
           <div class="queue-name">SiskaML</div>
-          <div class="queue-meta">Regular — Rp 30.000</div>
+          <div class="queue-meta">Sisa Match: 5 | Game ID: 34567890 (8082)</div>
         </div>
       </div>
       <div class="queue-row" style="border-left:3px solid var(--purple);">
         <div class="queue-info">
           <div class="queue-name">Budi99</div>
-          <div class="queue-meta">Regular — Rp 30.000</div>
+          <div class="queue-meta">Sisa Match: 2 | Game ID: 45678901 (8083)</div>
         </div>
       </div>
     </div>
@@ -304,12 +304,6 @@
     }
 
     toast('Moderator ' + email + ' telah dihapus!', 'success');
-  }
-
-  /* ── Session Check ── */
-  var session = JSON.parse(localStorage.getItem('mabarops_session') || 'null');
-  if (!session || session.role !== 'streamer') {
-    window.location.href = 'login.html';
   }
 
   function handleLogout() {
