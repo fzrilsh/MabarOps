@@ -135,22 +135,22 @@ var matchHistory = [];
 var completedCount = 12;
 
 var allPlayers = [
-  {nick:'Rafi_MLBB', id:'12345678', type:'ft', status:'belum_masuk', donatur:'RafiGaming'},
-  {nick:'Andi_ML', id:'23456789', type:'ft', status:'belum_masuk', donatur:'AndiPro'},
-  {nick:'Siska_Girl', id:'34567890', type:'rg', status:'belum_masuk', donatur:'SiskaML'},
-  {nick:'Budi_GT', id:'45678901', type:'rg', status:'belum_masuk', donatur:'Budi99'},
-  {nick:'Dewi_MLBB', id:'78901234', type:'ft', status:'waiting', donatur:'Dewi_Squad'},
-  {nick:'Fajar_ML', id:'56789012', type:'rg', status:'waiting', donatur:'FajarID'},
-  {nick:'Rina_MLBB', id:'67890123', type:'rg', status:'waiting', donatur:'RinaGZ'},
-  {nick:'HendraGG', id:'89012345', type:'rg', status:'waiting', donatur:'HendraGG'},
-  {nick:'TikaML', id:'90123456', type:'rg', status:'waiting', donatur:'TikaMLBB'},
-  {nick:'Doni_Kus', id:'01234567', type:'rg', status:'waiting', donatur:'DoniKus'},
-  {nick:'Putri_ML', id:'11111111', type:'ft', status:'waiting', donatur:'PutriML'},
-  {nick:'Adit_Pro', id:'22222222', type:'rg', status:'waiting', donatur:'AditPro'},
-  {nick:'Nina_Girl', id:'33333333', type:'rg', status:'waiting', donatur:'NinaGZ'},
-  {nick:'Bima_ID', id:'44444444', type:'rg', status:'waiting', donatur:'BimaID'},
-  {nick:'Citra_ML', id:'55555555', type:'ft', status:'waiting', donatur:'CitraML'},
-  {nick:'Edo_Squad', id:'66666666', type:'rg', status:'waiting', donatur:'EdoSquad'}
+  {nick:'Rafi_MLBB', id:'12345678', type:'ft', status:'belum_masuk', donatur:'RafiGaming', sisaMatch:5},
+  {nick:'Andi_ML', id:'23456789', type:'ft', status:'belum_masuk', donatur:'AndiPro', sisaMatch:3},
+  {nick:'Siska_Girl', id:'34567890', type:'rg', status:'belum_masuk', donatur:'SiskaML', sisaMatch:5},
+  {nick:'Budi_GT', id:'45678901', type:'rg', status:'belum_masuk', donatur:'Budi99', sisaMatch:2},
+  {nick:'Dewi_MLBB', id:'78901234', type:'ft', status:'waiting', donatur:'Dewi_Squad', sisaMatch:4},
+  {nick:'Fajar_ML', id:'56789012', type:'rg', status:'waiting', donatur:'FajarID', sisaMatch:1},
+  {nick:'Rina_MLBB', id:'67890123', type:'rg', status:'waiting', donatur:'RinaGZ', sisaMatch:3},
+  {nick:'HendraGG', id:'89012345', type:'rg', status:'waiting', donatur:'HendraGG', sisaMatch:6},
+  {nick:'TikaML', id:'90123456', type:'rg', status:'waiting', donatur:'TikaMLBB', sisaMatch:2},
+  {nick:'Doni_Kus', id:'01234567', type:'rg', status:'waiting', donatur:'DoniKus', sisaMatch:5},
+  {nick:'Putri_ML', id:'11111111', type:'ft', status:'waiting', donatur:'PutriML', sisaMatch:3},
+  {nick:'Adit_Pro', id:'22222222', type:'rg', status:'waiting', donatur:'AditPro', sisaMatch:4},
+  {nick:'Nina_Girl', id:'33333333', type:'rg', status:'waiting', donatur:'NinaGZ', sisaMatch:1},
+  {nick:'Bima_ID', id:'44444444', type:'rg', status:'waiting', donatur:'BimaID', sisaMatch:2},
+  {nick:'Citra_ML', id:'55555555', type:'ft', status:'waiting', donatur:'CitraML', sisaMatch:5},
+  {nick:'Edo_Squad', id:'66666666', type:'rg', status:'waiting', donatur:'EdoSquad', sisaMatch:3}
 ];
 
 var perPage = 8;
@@ -168,7 +168,9 @@ function syncQueueArray() {
     if (name && meta) {
       var found = false;
       for (var j = 0; j < allPlayers.length; j++) {
-        if (allPlayers[j].id === meta.textContent.replace('Game ID: ', '').split(' ')[0]) {
+        var gameIdPart = meta.textContent.split('Game ID: ')[1];
+        var gameId = gameIdPart ? gameIdPart.split(' ')[0] : '';
+        if (allPlayers[j].id === gameId) {
           reordered.push(allPlayers[j]);
           found = true;
           break;
@@ -202,7 +204,7 @@ function renderQueue() {
   var top4HasAnyone = false;
   for (var i = 0; i < Math.min(4, allPlayers.length); i++) {
     top4HasAnyone = true;
-    if (allPlayers[i].status !== 'playing') {
+    if (allPlayers[i].status !== 'ready') {
       top4AllMasuk = false;
     }
   }
@@ -218,15 +220,15 @@ function renderQueue() {
         + '</div>';
     }
 
-    html += '<div class="label label-playing" style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--cyan);margin-bottom:6px;display:flex;align-items:center;gap:6px;"><i class="fa-solid fa-play" style="font-size:0.75em;"></i> Sedang Bermain</div>';
+    html += '<div class="label label-playing" style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--cyan);margin-bottom:6px;display:flex;align-items:center;gap:6px;"><i class="fa-solid fa-play" style="font-size:0.75em;"></i> Giliran Saat Ini</div>';
     for (var i = 0; i < Math.min(4, pagePlayers.length); i++) {
-      html += buildRow(pagePlayers[i], startIdx + i + 1);
+      html += buildRow(pagePlayers[i], startIdx + i + 1, true);
     }
     if (pagePlayers.length > 4) {
       html += '<div style="height:8px;"></div>';
       html += '<div class="label label-next" style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--gold);margin-bottom:6px;display:flex;align-items:center;gap:6px;"><i class="fa-regular fa-clock" style="font-size:0.75em;"></i> Selanjutnya</div>';
       for (var i = 4; i < pagePlayers.length; i++) {
-        html += buildRow(pagePlayers[i], startIdx + i + 1);
+        html += buildRow(pagePlayers[i], startIdx + i + 1, false);
       }
     }
   } else {
@@ -238,7 +240,7 @@ function renderQueue() {
     } else {
       html += '<div class="label label-next" style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--gold);margin-bottom:6px;display:flex;align-items:center;gap:6px;"><i class="fa-regular fa-clock"></i> Antrean (Halaman ' + currentPage + ')</div>';
       for (var i = 0; i < pagePlayers.length; i++) {
-        html += buildRow(pagePlayers[i], startIdx + i + 1);
+        html += buildRow(pagePlayers[i], startIdx + i + 1, false);
       }
     }
   }
@@ -253,14 +255,14 @@ function renderQueue() {
   renderPagination();
 }
 
-function buildRow(player, pos) {
+function buildRow(player, pos, inPlayingSection) {
   var borderColor = player.type === 'ft' ? 'var(--gold)' : 'var(--purple)';
   var statusBadge = '';
   var showMoveBtns = true;
   var actionBtns = '';
 
-  if (player.status === 'playing') {
-    statusBadge = '<span class="badge badge-playing"><i class="fa-solid fa-play"></i> Sedang Main</span>';
+  if (player.status === 'ready') {
+    statusBadge = '<span class="badge badge-playing"><i class="fa-solid fa-check"></i> Ready</span>';
     showMoveBtns = false;
     actionBtns = '<button class="btn btn-sm btn-outline" style="border-color:var(--red);color:var(--red);" onclick="skipPlayer(\'' + player.id + '\')"><i class="fa-solid fa-forward-step"></i> Skip</button>';
   } else if (player.status === 'belum_masuk') {
@@ -273,6 +275,10 @@ function buildRow(player, pos) {
     actionBtns = '<button class="btn btn-sm btn-outline" style="border-color:var(--red);color:var(--red);" onclick="skipPlayer(\'' + player.id + '\')"><i class="fa-solid fa-forward-step"></i> Skip</button>';
   }
 
+  var metaText = inPlayingSection
+    ? 'Sisa Match: ' + (player.sisaMatch || 0) + ' | Game ID: ' + player.id + ' (8080)'
+    : 'Game ID: ' + player.id + ' (8080)';
+
   return '<div class="queue-row" style="border-left:3px solid ' + borderColor + ';">'
     + (showMoveBtns ? '<div class="move-buttons">'
     +   '<button class="btn btn-sm btn-outline" onclick="moveQueueItem(this,\'up\')" title="Naikkan"><i class="fa-solid fa-chevron-up"></i></button>'
@@ -280,7 +286,7 @@ function buildRow(player, pos) {
     + '</div>' : '')
     + '<div class="queue-info">'
     +   '<div class="queue-name">' + player.nick + '</div>'
-    +   '<div class="queue-meta"><span>Game ID: ' + player.id + ' (8080)</span> <button class="btn btn-sm btn-outline" onclick="copyText(\'' + player.id + '\');event.stopPropagation();" title="Salin Game ID" style="padding:1px 5px;font-size:9px;"><i class="fa-regular fa-copy"></i></button></div>'
+    +   '<div class="queue-meta"><span>' + metaText + '</span> <button class="btn btn-sm btn-outline" onclick="copyText(\'' + player.id + '\');event.stopPropagation();" title="Salin Game ID" style="padding:1px 5px;font-size:9px;"><i class="fa-regular fa-copy"></i></button></div>'
     + '</div>'
     + statusBadge
     + '<div class="queue-actions">' + actionBtns + '</div>'
@@ -364,7 +370,7 @@ function selectResult(result) {
 function masukRoom(playerId) {
   for (var i = 0; i < allPlayers.length; i++) {
     if (allPlayers[i].id === playerId) {
-      allPlayers[i].status = 'playing';
+      allPlayers[i].status = 'ready';
       toast(allPlayers[i].donatur + ' sudah masuk room!', 'success');
       break;
     }
@@ -440,10 +446,10 @@ function submitMatchReport() {
   };
   matchHistory.push(match);
 
-  // Hapus semua player yang 'playing' (top 4 yang sudah main)
+  // Hapus semua player yang 'ready' (top 4 yang sudah main)
   var playingIds = [];
   for (var i = 0; i < allPlayers.length; i++) {
-    if (allPlayers[i].status === 'playing') {
+    if (allPlayers[i].status === 'ready') {
       playingIds.push(allPlayers[i].id);
     }
   }
@@ -471,18 +477,12 @@ function submitMatchReport() {
   toast('Match #' + match.id + ' — ' + (match.result === 'win' ? '🏆 Menang' : '❌ Kalah') + ' (' + match.points + ' pts) — ' + playingIds.length + ' pemain selesai!', 'success');
 }
 
-/* ── Session Check ── */
-var session = JSON.parse(localStorage.getItem('mabarops_session') || 'null');
 function handleLogout() {
   localStorage.removeItem('mabarops_session');
   window.location.href = 'index.html';
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-  if (!session || session.role !== 'moderator') {
-    window.location.href = 'login.html';
-    return;
-  }
   renderQueue();
   updateStats();
 });
